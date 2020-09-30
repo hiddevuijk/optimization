@@ -6,18 +6,20 @@
 class GD {
 public:
     GD(int N, std::vector<std::vector<double> > A, std::vector<double> b)
-    : N(N), A(A), b(b), x(N,0), r(N,0), q(N,0), n_updates(0)
+    : N(N), A(A), b(b), x(N,0), r(N,0), q(N,0), n_steps(0)
     { }
 
     void first_step(const std::vector<double>& x0);
     void step();
+    void solve(const std::vector<double>& x0);
 
     void get_x( std::vector<double>& X) {
         for(int i=0;i<N;++i) X[i] = x[i];
     }
 
-    void solve(const std::vector<double>& x0);
-    int get_n() const { return n_updates; };
+
+    // current number of steps
+    int get_n() const { return n_steps; };
 
 private:
     int N;
@@ -31,17 +33,17 @@ private:
     double alpha;
     double delta;
     double delta0;
-    int n_update_r = 50;
-    int max_updates = 10000;
+    int n_steps_r = 50;
+    int max_steps = 10000;
     double epsilon = 1e-21;
-    int n_updates;
+    int n_steps;
 };
 
 void GD::solve(const std::vector<double>& x0)
 {
 
     first_step( x0);
-    while( n_updates < max_updates and delta > epsilon*epsilon*delta0 ) step();
+    while( n_steps < max_steps and delta > epsilon*epsilon*delta0 ) step();
 
 }
 
@@ -64,7 +66,7 @@ void GD::step()
     for(int i=0;i<N;++i) x[i] += alpha*r[i];
     
 
-    if( n_updates %n_update_r == 0  ) {
+    if( n_steps %n_steps_r == 0  ) {
         for(int i=0;i<N;++i) {
             r[i] = b[i];
             for(int j=0;j<N;++j) r[i] -= A[i][j]*x[j];
@@ -72,7 +74,7 @@ void GD::step()
     } else {
         for(int i=0;i<N;++i) r[i] -= alpha*q[i];
     } 
-    ++n_updates;
+    ++n_steps;
 
     // delta = r.r
     delta = 0;
