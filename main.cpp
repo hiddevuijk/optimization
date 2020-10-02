@@ -32,6 +32,7 @@ int main()
     gd.first_step(x);
     cout << x[0] << '\t' << x[1] << '\n';
     for(int i=0;i<T;++i) {
+        if( gd.get_done() ) break;
         gd.step();
         gd.get_x(x);
         cout << x[0] << '\t' << x[1] << '\n';

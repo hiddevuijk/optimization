@@ -20,6 +20,8 @@ public:
 
     // current number of steps
     int get_n() const { return n_steps; };
+    // done?
+    int get_done() const { return delta < epsilon*epsilon*delta0; }
 
 private:
     int N;
@@ -35,7 +37,7 @@ private:
     double delta0;
     int n_steps_r = 50;
     int max_steps = 10000;
-    double epsilon = 1e-21;
+    double epsilon = 1e-18;
     int n_steps;
 };
 
