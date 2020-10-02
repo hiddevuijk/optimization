@@ -35,8 +35,8 @@ private:
     double alpha;
     double delta;
     double delta0;
-    int n_steps_r = 50;
-    int max_steps = 10000;
+    int n_steps_r = 1000;
+    int max_steps = 100;
     double epsilon = 1e-18;
     int n_steps;
 };
